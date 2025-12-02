@@ -2,6 +2,7 @@ import type React from "react"
 import { getSession } from "@/lib/auth"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { headers } from "next/headers"
 import { BarChart, BookOpen, Home, ImageIcon, LogOut, MessageSquare, Settings, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -12,17 +13,30 @@ export default async function AdminLayout({
 }) {
   const session = await getSession()
 
-  // Skip auth check for login page
-  if (!session && !children.toString().includes("login")) {
+  // Determine current pathname reliably on the server
+  const h = headers()
+  const pathname =
+    h.get("x-invoke-path") ??
+    h.get("x-nextjs-pathname") ??
+    (() => {
+      try {
+        return new URL(h.get("referer") || "http://localhost").pathname
+      } catch {
+        return "/"
+      }
+    })()
+
+  // If not authenticated, redirect to login except when already on /admin/login
+  if (!session && pathname !== "/admin/login") {
     redirect("/admin/login")
   }
 
-  // If we're on the login page and already logged in, redirect to dashboard
-  if (session && children.toString().includes("login")) {
+  // If authenticated and on login page, send to dashboard
+  if (session && pathname === "/admin/login") {
     redirect("/admin/dashboard")
   }
 
-  // If we're on the login page, don't show the admin layout
+  // If not authenticated and on login page, render login without admin chrome
   if (!session) {
     return <>{children}</>
   }
