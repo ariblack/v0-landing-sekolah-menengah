@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Define database connection via the `DATABASE_URL` env var
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define custom output path for generated Prisma Client
+generator client {
+  provider = "prisma-client-js"
+  output   = "/app/generated/prisma-client"
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  username  String     @unique
+  password  String
+  name      String
+  role      String     @default("admin")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Department {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  image       String?
+  features    String[]
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Teacher {
+  id           Int      @id @default(autoincrement())
+  name         String
+  position     String
+  department   String
+  educationcation String
+  image        String?
+  email        String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Announcement {
+  id        Int         @id @default(autoincrement())
+  title     String
+  content   String
+  category  String      @default("general")
+  priority  String      @default("normal")
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  image       String?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Gallery {
+  id        Int         @id @default(autoincrement())
+  title     String
+  image     String
+  category  String      @default("general")
+  active    Boolean     @default(true)
+  date      DateTime
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Application {
+  id           Int        @id @default(autoincrement())
+  studentName  String
+  email        String
+  phone        String
+  program      String
+  address      String
+  education    String
+  message      String?
+  status       String     @default("pending")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Extracurricular {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  schedule    String
+  image       String?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Testimonial {
+  id          Int       @id @default(autoincrement())
+  name        String
+  role        String
+  content     String
+  image       String?
+  rating      Int       @default(5)
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SchoolInfo {
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String
+  phone       String
+  email       String
+  website     String?
+  mapUrl      String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Advantage {
+  id       Int          @id // shared
+  title    String       @unique // shared
+  description String // video-only
+  icon     String? // article-only
+
+  owner   SchoolInfo @relation(fields: [ownerId], references: [id])
+  ownerId Int
+}
