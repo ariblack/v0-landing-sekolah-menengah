@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
-  let departments: Department[] = [
+  /* let departments: Department[] = [
     {
       id: "1",
       name: "Teknik Komputer dan Jaringan",
@@ -323,7 +323,7 @@ async function main() {
       password: "editor123", // In a real app, this would be hashed
       role: "editor",
     },
-  ]  
+  ]   */
   const alice = await prisma.user.upsert({
     where: { email: 'alice@prisma.io' },
     update: {},
