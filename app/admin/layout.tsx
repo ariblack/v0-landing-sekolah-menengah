@@ -1,5 +1,5 @@
 import type React from "react"
-import { getSession } from "@/lib/auth"
+import { getSession } from "@/lib/auth1"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { headers } from "next/headers"

@@ -1,4 +1,4 @@
-import { logout } from "@/lib/auth"
+import { logout } from "@/lib/auth1"
 import type { NextRequest } from "next/server"
 
 export async function POST(request: NextRequest) {
