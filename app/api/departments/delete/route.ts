@@ -1,5 +1,5 @@
 import { deleteDepartment } from "@/app/actions"
-import { requireAuth } from "@/lib/auth1"
+import { requireAuth } from "@/lib/auth"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
